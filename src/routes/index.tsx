@@ -1,10 +1,14 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useContext } from 'react';
+
+import AuthContext from '../contexts/auth';
+
+import AppRoutes from './app.routes';
+import AuthRoutes from './auth.routes';
 
 const Routes: React.FC = () => {
-   return (
-      <View />
-   );
+   const { signed } = useContext(AuthContext);
+
+   return signed ? (<AppRoutes />) : (<AuthRoutes />)
 };
 
 export default Routes;
