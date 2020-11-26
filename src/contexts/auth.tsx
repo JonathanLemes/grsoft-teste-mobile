@@ -4,7 +4,7 @@ import api from '../services/api';
 interface AuthContextData {
    signed: boolean,
    user: object | null,
-   signIn(data: UserData): Promise<void>
+   signIn(data: UserData): Promise<boolean>
 }
 
 interface UserData {
@@ -12,17 +12,31 @@ interface UserData {
    password: string;
 }
 
+interface ResponseAuth {
+   name: string,
+   email: string,
+   token: string
+}
+
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
    const [user, setUser] = useState<object | null>(null);
 
-   const signIn = async (data: UserData) => {
-      const response = await api.authUser(data);
+   const signIn = async (data: UserData): Promise<boolean> => {
+      const response: ResponseAuth = await api.authUser(data);
+      console.log(response);
+
+      if (response.token === "error") return false;
 
       const { name, email } = response;
 
-      setUser({ name, email });
+      if (response) {
+         setUser({ name, email });
+         return true;
+      }
+
+      return false;
    }
 
    return (

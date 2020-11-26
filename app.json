@@ -2,11 +2,13 @@
   "name": "frontend",
   "displayName": "frontend",
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "grsoft-teste-mobile",
+    "slug": "grsoft-teste-mobile",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "description": "",
+    "githubUrl": "https://github.com/JonathanLemes/grsoft-teste-mobile"
   }
 }

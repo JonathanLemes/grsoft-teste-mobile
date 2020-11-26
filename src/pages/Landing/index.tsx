@@ -39,7 +39,6 @@ const ViewImage = styled.View`
    align-items: flex-end;
    justify-content: center;
 
-   filter: drop-shadow(5px 5px 35px rgba(0, 0, 0, 0.25));
    width: 100vw;
    padding-bottom: 6vh;
 `;
@@ -51,7 +50,7 @@ const Title = styled.Text`
 
    padding-left: 8vw;
    padding-bottom: 3vh;
-   font-size: 5rem;
+   font-size: 5em;
 `;
 
 const Subtitle = styled.Text`
@@ -61,7 +60,7 @@ const Subtitle = styled.Text`
    font-weight: 400;
    padding-bottom: 3vh;
    padding-left: 8vw;
-   font-size: 1.5rem;
+   font-size: 1.5em;
 `;
 
 const Button = styled.TouchableOpacity`
@@ -82,7 +81,7 @@ const ButtonText = styled.Text`
    font-family: 'Poppins-Semibold';
    color: white;
 
-   font-size: 1.25rem;
+   font-size: 1.25em;
    font-weight: 600;
 `;
 

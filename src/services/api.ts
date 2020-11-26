@@ -12,17 +12,15 @@ interface ResponseAuth {
 }
 
 const server = axios.create({
-   baseURL: 'http://localhost:3333',
+   baseURL: 'https://fast-mountain-02347.herokuapp.com',
 });
 
 export default {
    authUser: async (data: UserData): Promise<ResponseAuth> => {
-      const response = await server.post('/users/signin', data);
-
-      if (response.status === 200) {
+      return await server.post('/users/signin', data).then((response) => {
          return (response.data);
-      }
-
-      return {} as ResponseAuth;
+      }).catch(() => {
+         return {token: 'error'} as ResponseAuth;
+      });
    }
 }
