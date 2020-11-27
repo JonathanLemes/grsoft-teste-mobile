@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components/native';
+import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import { vw, vh } from 'react-native-expo-viewport-units';
 
 interface Props {
    navigation: any
@@ -8,81 +9,93 @@ interface Props {
 
 const Landing: React.FC = (props: React.Component<Props> | any) => {
    return (
-      <View>
-         <ViewImage>
-            <Image source={require('../../images/landing.png')} />
-         </ViewImage>
-         <Title>GRFood</Title>
-         <Subtitle>Turbine suas vendas com o GRFood Delivery</Subtitle>
-         <Button onPress={() => props.navigation.navigate('SignIn')}><ButtonText>VER PRODUTOS</ButtonText></Button>
+      <View style={styles.view}>
+         <View style={styles.viewImage}>
+            <Image style={styles.image} source={require('../../images/landing.png')} />
+         </View>
+         <View style={styles.viewText}>
+            <Text style={styles.title}>GRFood</Text>
+            <Text style={styles.subTitle}>Turbine suas vendas com o GRFood Delivery</Text>
+            <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('SignIn')}><Text style={styles.buttonText}>VER PRODUTOS</Text></TouchableOpacity>
+         </View>
       </View>
    )
 }
 
-const View = styled.View`
-   display: flex;
-   align-items: flex-start;
-   justify-content: center;
+const styles = StyleSheet.create({
+   view: {
+      flex: 1,
+      alignItems: 'flex-start',
+      justifyContent: 'center',
 
-   background-color: #968EEB;
-   width: 100vw;
-   height: 100vh;
-`;
+      backgroundColor: '#968EEB',
+      width: vw(100),
+      height: vh(100),
+      paddingTop: vh(15),
+      paddingBottom: vh(15)
+   },
 
-const Image = styled.Image`
-   width: 80vw;
-   height: 60vw;
-`;
+   image: {
+      width: vw(80),
+      height: vw(60)
+   },
 
-const ViewImage = styled.View`
-   display: flex;
-   align-items: flex-end;
-   justify-content: center;
+   viewImage: {
+      flex: 1,
+      alignItems: 'flex-end',
+      justifyContent: 'center',
 
-   width: 100vw;
-   padding-bottom: 6vh;
-`;
+      width: vw(100)
+   },
 
-const Title = styled.Text`
-   font-family: 'Poppins-SemiBold';
-   font-weight: 600;
-   color: white;
+   viewText: {
+      flex: 1,
+      alignItems: 'flex-start',
+      justifyContent: 'center',
 
-   padding-left: 8vw;
-   padding-bottom: 3vh;
-   font-size: 5em;
-`;
+      width: vw(100)
+   },
 
-const Subtitle = styled.Text`
-   font-family: 'Poppins-Regular';
-   color: white;
+   title: {
+      //fontFamily: 'Poppins-SemiBold',
+      fontWeight: '600',
+      color: 'white',
 
-   font-weight: 400;
-   padding-bottom: 3vh;
-   padding-left: 8vw;
-   font-size: 1.5em;
-`;
+      paddingLeft: vw(8),
+      paddingBottom: vh(3),
+      fontSize: 80
+   },
 
-const Button = styled.TouchableOpacity`
-   background: #514B96;
-   color: white;
-   display: flex;
-   align-items: center;
-   justify-content: center;
+   subTitle: {
+      //fontFamily: 'Poppins-Regular',
+      color: 'white',
 
-   font-weight: 600;
-   border-radius: 30px;
-   margin-left: 8vw;
-   width: 50vw;
-   height: 17vw;
-`
+      fontWeight: '400',
+      paddingBottom: vh(3),
+      paddingLeft: vw(8),
+      fontSize: 24
+   },
 
-const ButtonText = styled.Text`
-   font-family: 'Poppins-Semibold';
-   color: white;
+   button: {
+      backgroundColor: '#514B96',
+      color: 'white',
+      alignItems: 'center',
+      justifyContent: 'center',
 
-   font-size: 1.25em;
-   font-weight: 600;
-`;
+      fontWeight: '600',
+      borderRadius: 30,
+      marginLeft: vw(8),
+      width: vw(50),
+      height: vw(17)
+   },
+
+   buttonText: {
+      //fontFamily: 'Poppins-SemiBold',
+      color: 'white',
+
+      fontSize: 20,
+      fontWeight: '600'
+   }
+});
 
 export default Landing;
