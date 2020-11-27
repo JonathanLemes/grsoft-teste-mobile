@@ -1,5 +1,6 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import api from '../services/api';
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface AuthContextData {
    signed: boolean,
@@ -7,7 +8,8 @@ interface AuthContextData {
    signIn(data: UserData): Promise<boolean>,
    signUp(data: SignUpData): Promise<boolean>,
    getCategories(): Promise<Category[]>,
-   setUser: React.Dispatch<React.SetStateAction<object | null>>
+   setUser: React.Dispatch<React.SetStateAction<object | null>>,
+   getProducts(id: number): Promise<Product[]>
 }
 
 interface UserData {
@@ -22,14 +24,23 @@ interface SignUpData {
 }
 
 interface ResponseAuth {
-   name: string,
-   email: string,
-   token: string
+   token: string,
+   userData: {
+      name: string,
+      email: string
+   }
 }
 
 interface Category {
    name: string,
-   url: string
+   url: string,
+   id: number
+}
+
+interface Product {
+   id: number,
+   name: string,
+   image_url: string
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -37,15 +48,27 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export const AuthProvider: React.FC = ({ children }) => {
    const [user, setUser] = useState<object | null>(null);
 
+   const tryToken = async (token: string) => {
+      await api.authenticateToken(token).then(async () => {
+         const user = await AsyncStorage.getItem('@GRSoftTeste:user');
+         if (user) setUser(JSON.parse(user));
+      }).catch(() => {
+         setUser(null);
+      });
+   }
+
    const signIn = async (data: UserData): Promise<boolean> => {
       const response: ResponseAuth = await api.authUser(data);
 
       if (response.token === "error") return false;
 
-      const { name, email } = response;
+      const { userData, token } = response;
 
       if (response) {
-         setUser({ name, email });
+         await AsyncStorage.setItem('@GRSoftTeste:user', JSON.stringify({ name: userData.name, email: userData.email }));
+         await AsyncStorage.setItem('@GRSoftTeste:token', token);
+
+         setUser({ name: userData.name, email: userData.email });
          return true;
       }
 
@@ -60,8 +83,25 @@ export const AuthProvider: React.FC = ({ children }) => {
       return await api.getCategories();
    }
 
+   const getProducts = async (id: number): Promise<Product[]> => {
+      return await api.getProducts(id);
+   }
+
+   useEffect(() => {
+      async function loadStorageData() {
+         const storageUser = await AsyncStorage.getItem('@GRSoftTeste:user');
+         const storageToken = await AsyncStorage.getItem('@GRSoftTeste:token');
+
+         if (storageUser && storageToken) {
+            tryToken(storageToken);
+         }
+      }
+
+      loadStorageData();
+   }, []);
+
    return (
-      <AuthContext.Provider value={{ signed: !!user, user, signIn, signUp, getCategories, setUser }}>
+      <AuthContext.Provider value={{ signed: !!user, user, signIn, signUp, getCategories, setUser, getProducts }}>
          { children }
       </AuthContext.Provider>
    )

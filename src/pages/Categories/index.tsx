@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../contexts/apiContexts';
-import { Alert, Image, Platform, StyleSheet, Text, TextInput, View, TouchableOpacity, ActivityIndicator } from 'react-native';
-import * as EmailValidator from 'email-validator';
+import { Alert, Image, Platform, StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { vw, vh } from 'react-native-expo-viewport-units';
 import SizeContext from '../../contexts/sizeContexts';
 
@@ -11,7 +10,8 @@ interface Props {
 
 interface Category {
    name: string,
-   url: string
+   url: string,
+   id: number
 }
 
 const Categories: React.FC = (props: React.Component<Props> | any) => {
@@ -37,6 +37,10 @@ const Categories: React.FC = (props: React.Component<Props> | any) => {
       setUser(null);
    }
 
+   const handleCategorySelection = (categoryId: number) => {
+      props.navigation.navigate('Products', { categoryId });
+   }
+
    useEffect(() => {
       getCategories().then((categories) => {
          setCategories(categories);
@@ -49,7 +53,6 @@ const Categories: React.FC = (props: React.Component<Props> | any) => {
       return (
          <View style={styles.view}>
             <Image style={styles.image} source={require('../../images/logo.png')} />
-            <Text style={{...styles.title, fontSize: actuatedNormalize(38)}}>GRFood</Text>
             <View style={styles.viewCategories}>
                <ActivityIndicator size="large" color="#5C55B4" />
             </View>
@@ -61,12 +64,11 @@ const Categories: React.FC = (props: React.Component<Props> | any) => {
       <View style={styles.view}>
          <TouchableOpacity style={styles.returnButton} onPress={() => handleLogOut()}><Image style={styles.returnImage} source={require('../../images/logout.png')} /></TouchableOpacity>
          <Image style={styles.image} source={require('../../images/logo.png')} />
-         <Text style={{...styles.title, fontSize: actuatedNormalize(38)}}>GRFood</Text>
          <View style={styles.viewCategories}>
             <Text style={{...styles.text, fontSize: actuatedNormalize(20)}}>Qual categoria de produto você deseja ver agora?</Text>
             {categories.map((category, index) => {
-               if (index % 2 === 0) return (<TouchableOpacity key={category.url} style={{...styles.buttons, backgroundColor: '#5C55B4'}}><Text style={{...styles.textButtons, fontSize: actuatedNormalize(13)}}>{category.name}</Text></TouchableOpacity>)
-               else return (<TouchableOpacity key={category.url} style={{...styles.buttons, backgroundColor: '#9189E4'}}><Text style={{...styles.textButtons, fontSize: actuatedNormalize(13)}}>{category.name}</Text></TouchableOpacity>)
+               if (index % 2 === 0) return (<TouchableOpacity key={category.url} style={{...styles.buttons, backgroundColor: '#5C55B4'}} onPress={() => handleCategorySelection(category.id)}><Text style={{...styles.textButtons, fontSize: actuatedNormalize(13)}}>{category.name}</Text></TouchableOpacity>)
+               else return (<TouchableOpacity key={category.url} style={{...styles.buttons, backgroundColor: '#9189E4'}} onPress={() => handleCategorySelection(category.id)}><Text style={{...styles.textButtons, fontSize: actuatedNormalize(13)}}>{category.name}</Text></TouchableOpacity>)
             })}
          </View>
       </View>
@@ -114,17 +116,9 @@ const styles = StyleSheet.create({
    },
 
    image: {
-      width: vw(10),
+      width: vw(15),
       height: vw(15),
       marginTop: vh(10)
-   },
-
-   title: {
-      //fontFamily: 'Poppins-SemiBold',
-      fontWeight: '600',
-      color: 'white',
-
-      paddingBottom: vh(3)
    },
 
    viewCategories: {
@@ -137,7 +131,7 @@ const styles = StyleSheet.create({
       borderTopLeftRadius: 60,
       borderTopRightRadius: 60,
       width: vw(100),
-      height: vh(75),
+      height: vh(85),
       bottom: 0
    },
 

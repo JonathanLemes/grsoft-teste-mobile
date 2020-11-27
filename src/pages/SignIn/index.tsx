@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../contexts/apiContexts';
 import { Alert, Image, Platform, StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { vw, vh } from 'react-native-expo-viewport-units';
 import SizeContext from '../../contexts/sizeContexts';
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface Props {
    navigation: any
@@ -48,6 +49,20 @@ const SignIn: React.FC = (props: React.Component<Props> | any) => {
       }
    };
 
+   useEffect(() => {
+      async function checkStorage() {
+         const storageUser = await AsyncStorage.getItem('@GRSoftTeste:user');
+
+         if (storageUser) {
+            const { email } = JSON.parse(storageUser);
+
+            setEmail(email);
+         }
+      }
+
+      checkStorage();
+   }, []);
+
    if (isLoading) {
       return (
          <View style={styles.view}>
@@ -69,7 +84,7 @@ const SignIn: React.FC = (props: React.Component<Props> | any) => {
          <View style={styles.viewSign}>
             <Text style={{...styles.text, fontSize: actuatedNormalize(18)}}>Faça login para conferir os nossos produtos!</Text>
             <TextInput style={styles.textInput} placeholder='exemplo@grfood.com.br' placeholderTextColor='#968EEB' value={email} onChangeText={(text) => setEmail(text)} />
-            <TextInput style={styles.textInput} placeholder='*****' placeholderTextColor='#968EEB' value={password} secureTextEntry onChangeText={(text) => setPassword(text)} />
+            <TextInput style={styles.textInput} placeholder='senha' placeholderTextColor='#968EEB' value={password} secureTextEntry onChangeText={(text) => setPassword(text)} />
             <TouchableOpacity style={{...styles.buttons, backgroundColor: '#5C55B4'}} onPress={() => handleSignIn()}><Text style={{...styles.textButtons, fontSize: actuatedNormalize(13)}}>Login</Text></TouchableOpacity>
             <TouchableOpacity style={{...styles.buttons, backgroundColor: '#9189E4'}} onPress={() => props.navigation.navigate('SignUp')}><Text style={{...styles.textButtons, fontSize: actuatedNormalize(13)}}>Não possui login? Cadastre-se!</Text></TouchableOpacity>
          </View>

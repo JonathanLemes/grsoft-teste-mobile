@@ -8,7 +8,7 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "description": "",
+    "description": "Teste feito para a empresa GRSoft, de um app mobile em React Native",
     "githubUrl": "https://github.com/JonathanLemes/grsoft-teste-mobile"
   }
 }

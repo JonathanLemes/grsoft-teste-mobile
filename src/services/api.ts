@@ -12,9 +12,11 @@ interface SignUpData {
 }
 
 interface ResponseAuth {
-   name: string,
-   email: string,
-   token: string
+   token: string,
+   userData: {
+      name: string,
+      email: string
+   }
 }
 
 const server = axios.create({
@@ -44,5 +46,17 @@ export default {
       }).catch((error) => {
          return error;
       });
+   },
+
+   getProducts: async (id: number) => {
+      return await server.get(`categories/${id}/products`).then((response) => {
+         return response.data.products;
+      }).catch((error) => {
+         return error;
+      });
+   },
+
+   authenticateToken: async (token: string) => {
+      server.defaults.headers.Authorization = token;
    }
 }
