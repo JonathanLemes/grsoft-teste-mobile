@@ -4,12 +4,19 @@ import api from '../services/api';
 interface AuthContextData {
    signed: boolean,
    user: object | null,
-   signIn(data: UserData): Promise<boolean>
+   signIn(data: UserData): Promise<boolean>,
+   signUp(data: SignUpData): Promise<boolean>
 }
 
 interface UserData {
-   email: string;
-   password: string;
+   email: string,
+   password: string
+}
+
+interface SignUpData {
+   name: string,
+   email: string,
+   password: string
 }
 
 interface ResponseAuth {
@@ -25,7 +32,6 @@ export const AuthProvider: React.FC = ({ children }) => {
 
    const signIn = async (data: UserData): Promise<boolean> => {
       const response: ResponseAuth = await api.authUser(data);
-      console.log(response);
 
       if (response.token === "error") return false;
 
@@ -39,8 +45,12 @@ export const AuthProvider: React.FC = ({ children }) => {
       return false;
    }
 
+   const signUp = async (data: SignUpData): Promise<boolean> => {
+      return await api.createUser(data);
+   }
+
    return (
-      <AuthContext.Provider value={{ signed: !!user, user, signIn}}>
+      <AuthContext.Provider value={{ signed: !!user, user, signIn, signUp}}>
          { children }
       </AuthContext.Provider>
    )

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components/native';
 import AuthContext from '../../contexts/auth';
 import { FaLessThan } from 'react-icons/fa';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 interface Props {
    navigation: any
@@ -14,21 +14,37 @@ interface UserData {
 }
 
 const SignIn: React.FC = (props: React.Component<Props> | any) => {
-   const { signed, signIn } = useContext(AuthContext);
+   const { signIn } = useContext(AuthContext);
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
 
+   const showAlert = (alertTitle: string, alertText: string) => {
+      if (Platform.OS === 'web') alert(`${alertTitle}: ${alertText}`);
+      else {
+         Alert.alert(
+            alertTitle,
+            alertText,
+            [
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ],
+            { cancelable: false }
+         );
+      }
+   }
+
    const handleSignIn = async () => {
+      if (email === '' || password === '') {
+         showAlert('Erro', 'Todos os dados são obrigatórios');
+         return;
+      }
+
       const success: boolean = await signIn({
          email,
          password
       });
 
       if (!success) {
-         Alert.alert(
-            'Erro',
-            'Falha na autenticação'
-         );
+         showAlert('Erro', 'Falha na autenticação');
       }
    };
 
@@ -42,7 +58,7 @@ const SignIn: React.FC = (props: React.Component<Props> | any) => {
             <Input placeholder='exemplo@grfood.com.br' placeholderTextColor='#968EEB' value={email} onChangeText={(text) => setEmail(text)} />
             <Input placeholder='*****' placeholderTextColor='#968EEB' value={password} secureTextEntry onChangeText={(text) => setPassword(text)} />
             <ButtonSignIn onPress={() => handleSignIn()}><TextButtons>Login</TextButtons></ButtonSignIn>
-            <ButtonSignUp><TextButtons>Não possui login? Cadastre-se!</TextButtons></ButtonSignUp>
+            <ButtonSignUp onPress={() => props.navigation.navigate('SignUp')}><TextButtons>Não possui login? Cadastre-se!</TextButtons></ButtonSignUp>
          </SignInView>
       </View>
    )

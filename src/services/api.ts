@@ -5,6 +5,12 @@ interface UserData {
    password: string;
 }
 
+interface SignUpData {
+   name: string,
+   email: string,
+   password: string
+}
+
 interface ResponseAuth {
    name: string,
    email: string,
@@ -21,6 +27,14 @@ export default {
          return (response.data);
       }).catch(() => {
          return {token: 'error'} as ResponseAuth;
+      });
+   },
+
+   createUser: async (data: SignUpData): Promise<boolean> => {
+      return await server.post('/users', data).then(() => {
+         return true;
+      }).catch(() => {
+         return false;
       });
    }
 }
