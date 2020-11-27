@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
-import AuthContext from '../../contexts/auth';
+import AuthContext from '../../contexts/apiContexts';
 import { Alert, Image, Platform, StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { vw, vh } from 'react-native-expo-viewport-units';
+import SizeContext from '../../contexts/sizeContexts';
 
 interface Props {
    navigation: any
@@ -9,6 +10,7 @@ interface Props {
 
 const SignIn: React.FC = (props: React.Component<Props> | any) => {
    const { signIn } = useContext(AuthContext);
+   const { actuatedNormalize } = useContext(SizeContext);
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const [isLoading, setIsLoading] = useState(false);
@@ -49,27 +51,27 @@ const SignIn: React.FC = (props: React.Component<Props> | any) => {
    if (isLoading) {
       return (
          <View style={styles.view}>
-         <TouchableOpacity style={styles.returnButton} onPress={() => props.navigation.navigate('Landing')}><Text style={styles.returnText}>{'<'}</Text></TouchableOpacity>
-         <Image style={styles.image} source={require('../../images/logo.png')} />
-         <Text style={styles.title}>GRFood</Text>
-         <View style={styles.viewSign}>
-            <ActivityIndicator size="large" color="#5C55B4" />
+            <TouchableOpacity style={styles.returnButton} onPress={() => props.navigation.navigate('Landing')}><Text style={{...styles.returnText, fontSize: actuatedNormalize(30)}}>{'<'}</Text></TouchableOpacity>
+            <Image style={styles.image} source={require('../../images/logo.png')} />
+            <Text style={{...styles.title, fontSize: actuatedNormalize(55)}}>GRFood</Text>
+            <View style={styles.viewSign}>
+               <ActivityIndicator size="large" color="#5C55B4" />
+            </View>
          </View>
-      </View>
       );
    }
 
    return (
       <View style={styles.view}>
-         <TouchableOpacity style={styles.returnButton} onPress={() => props.navigation.navigate('Landing')}><Text style={styles.returnText}>{'<'}</Text></TouchableOpacity>
+         <TouchableOpacity style={styles.returnButton} onPress={() => props.navigation.navigate('Landing')}><Text style={{...styles.returnText, fontSize: actuatedNormalize(30)}}>{'<'}</Text></TouchableOpacity>
          <Image style={styles.image} source={require('../../images/logo.png')} />
-         <Text style={styles.title}>GRFood</Text>
+         <Text style={{...styles.title, fontSize: actuatedNormalize(55)}}>GRFood</Text>
          <View style={styles.viewSign}>
-            <Text style={styles.text}>Faça login para conferir os nossos produtos!</Text>
+            <Text style={{...styles.text, fontSize: actuatedNormalize(18)}}>Faça login para conferir os nossos produtos!</Text>
             <TextInput style={styles.textInput} placeholder='exemplo@grfood.com.br' placeholderTextColor='#968EEB' value={email} onChangeText={(text) => setEmail(text)} />
             <TextInput style={styles.textInput} placeholder='*****' placeholderTextColor='#968EEB' value={password} secureTextEntry onChangeText={(text) => setPassword(text)} />
-            <TouchableOpacity style={{...styles.buttons, backgroundColor: '#5C55B4'}} onPress={() => handleSignIn()}><Text style={styles.textButtons}>Login</Text></TouchableOpacity>
-            <TouchableOpacity style={{...styles.buttons, backgroundColor: '#9189E4'}} onPress={() => props.navigation.navigate('SignUp')}><Text style={styles.textButtons}>Não possui login? Cadastre-se!</Text></TouchableOpacity>
+            <TouchableOpacity style={{...styles.buttons, backgroundColor: '#5C55B4'}} onPress={() => handleSignIn()}><Text style={{...styles.textButtons, fontSize: actuatedNormalize(13)}}>Login</Text></TouchableOpacity>
+            <TouchableOpacity style={{...styles.buttons, backgroundColor: '#9189E4'}} onPress={() => props.navigation.navigate('SignUp')}><Text style={{...styles.textButtons, fontSize: actuatedNormalize(13)}}>Não possui login? Cadastre-se!</Text></TouchableOpacity>
          </View>
       </View>
    )
@@ -112,9 +114,7 @@ const styles = StyleSheet.create({
    returnText: {
       color: '#5C55B4',
       //fontFamily: 'Poppins-SemiBold',
-      fontWeight: '600',
-
-      fontSize: 30
+      fontWeight: '600'
    },
 
    image: {
@@ -128,8 +128,7 @@ const styles = StyleSheet.create({
       fontWeight: '600',
       color: 'white',
 
-      paddingBottom: vh(3),
-      fontSize: 80
+      paddingBottom: vh(3)
    },
 
    viewSign: {
@@ -153,7 +152,6 @@ const styles = StyleSheet.create({
       textAlign: 'center',
 
       paddingBottom: vh(3),
-      fontSize: 24,
       width: vw(70)
    },
 

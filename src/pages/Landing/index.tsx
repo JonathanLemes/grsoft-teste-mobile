@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { vw, vh } from 'react-native-expo-viewport-units';
+import SizeContext from '../../contexts/sizeContexts';
 
 interface Props {
    navigation: any
 }
 
-
 const Landing: React.FC = (props: React.Component<Props> | any) => {
+   const { actuatedNormalize } = useContext(SizeContext);
+
    return (
       <View style={styles.view}>
          <View style={styles.viewImage}>
             <Image style={styles.image} source={require('../../images/landing.png')} />
          </View>
          <View style={styles.viewText}>
-            <Text style={styles.title}>GRFood</Text>
-            <Text style={styles.subTitle}>Turbine suas vendas com o GRFood Delivery</Text>
-            <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('SignIn')}><Text style={styles.buttonText}>VER PRODUTOS</Text></TouchableOpacity>
+            <Text style={{...styles.title, fontSize: actuatedNormalize(55)}}>GRFood</Text>
+            <Text style={{...styles.subTitle, fontSize: actuatedNormalize(18)}}>Turbine suas vendas com o GRFood Delivery</Text>
+            <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('SignIn')}><Text style={{...styles.buttonText, fontSize: actuatedNormalize(15)}}>VER PRODUTOS</Text></TouchableOpacity>
          </View>
       </View>
    )
@@ -62,8 +64,7 @@ const styles = StyleSheet.create({
       color: 'white',
 
       paddingLeft: vw(8),
-      paddingBottom: vh(3),
-      fontSize: 80
+      paddingBottom: vh(3)
    },
 
    subTitle: {
@@ -72,8 +73,7 @@ const styles = StyleSheet.create({
 
       fontWeight: '400',
       paddingBottom: vh(3),
-      paddingLeft: vw(8),
-      fontSize: 24
+      paddingLeft: vw(8)
    },
 
    button: {
@@ -92,8 +92,6 @@ const styles = StyleSheet.create({
    buttonText: {
       //fontFamily: 'Poppins-SemiBold',
       color: 'white',
-
-      fontSize: 20,
       fontWeight: '600'
    }
 });

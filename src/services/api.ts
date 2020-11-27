@@ -36,5 +36,13 @@ export default {
       }).catch(() => {
          return false;
       });
+   },
+
+   getCategories: async () => {
+      return await server.get('/categories').then((response) => {
+         return response.data;
+      }).catch((error) => {
+         return error;
+      });
    }
 }

@@ -5,7 +5,9 @@ interface AuthContextData {
    signed: boolean,
    user: object | null,
    signIn(data: UserData): Promise<boolean>,
-   signUp(data: SignUpData): Promise<boolean>
+   signUp(data: SignUpData): Promise<boolean>,
+   getCategories(): Promise<Category[]>,
+   setUser: React.Dispatch<React.SetStateAction<object | null>>
 }
 
 interface UserData {
@@ -23,6 +25,11 @@ interface ResponseAuth {
    name: string,
    email: string,
    token: string
+}
+
+interface Category {
+   name: string,
+   url: string
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -49,8 +56,12 @@ export const AuthProvider: React.FC = ({ children }) => {
       return await api.createUser(data);
    }
 
+   const getCategories = async (): Promise<Category[]> => {
+      return await api.getCategories();
+   }
+
    return (
-      <AuthContext.Provider value={{ signed: !!user, user, signIn, signUp}}>
+      <AuthContext.Provider value={{ signed: !!user, user, signIn, signUp, getCategories, setUser }}>
          { children }
       </AuthContext.Provider>
    )

@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
-import AuthContext from '../../contexts/auth';
+import AuthContext from '../../contexts/apiContexts';
 import { Alert, Image, Platform, StyleSheet, Text, TextInput, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import * as EmailValidator from 'email-validator';
 import { vw, vh } from 'react-native-expo-viewport-units';
+import SizeContext from '../../contexts/sizeContexts';
 
 interface Props {
    navigation: any
@@ -10,6 +11,7 @@ interface Props {
 
 const SignUp: React.FC = (props: React.Component<Props> | any) => {
    const { signUp } = useContext(AuthContext);
+   const { actuatedNormalize } = useContext(SizeContext);
    const [name, setName] = useState('');
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
@@ -69,27 +71,27 @@ const SignUp: React.FC = (props: React.Component<Props> | any) => {
    if (isLoading) {
       return (
          <View style={styles.view}>
-         <TouchableOpacity style={styles.returnButton} onPress={() => props.navigation.navigate('Landing')}><Text style={styles.returnText}>{'<'}</Text></TouchableOpacity>
-         <Image style={styles.image} source={require('../../images/logo.png')} />
-         <Text style={styles.title}>GRFood</Text>
-         <View style={styles.viewSign}>
-            <ActivityIndicator size="large" color="#5C55B4" />
+            <TouchableOpacity style={styles.returnButton} onPress={() => props.navigation.navigate('SignIn')}><Text style={{...styles.returnText, fontSize: actuatedNormalize(30)}}>{'<'}</Text></TouchableOpacity>
+            <Image style={styles.image} source={require('../../images/logo.png')} />
+            <Text style={{...styles.title, fontSize: actuatedNormalize(55)}}>GRFood</Text>
+            <View style={styles.viewSign}>
+               <ActivityIndicator size="large" color="#5C55B4" />
+            </View>
          </View>
-      </View>
       );
    }
 
    return (
       <View style={styles.view}>
-         <TouchableOpacity style={styles.returnButton} onPress={() => props.navigation.navigate('SignIn')}><Text style={styles.returnText}>{'<'}</Text></TouchableOpacity>
+         <TouchableOpacity style={styles.returnButton} onPress={() => props.navigation.navigate('SignIn')}><Text style={{...styles.returnText, fontSize: actuatedNormalize(30)}}>{'<'}</Text></TouchableOpacity>
          <Image style={styles.image} source={require('../../images/logo.png')} />
-         <Text style={styles.title}>GRFood</Text>
+         <Text style={{...styles.title, fontSize: actuatedNormalize(55)}}>GRFood</Text>
          <View style={styles.viewSign}>
             <TextInput style={styles.textInput} placeholder='nome completo' placeholderTextColor='#968EEB' value={name} onChangeText={(text) => setName(text)} />
             <TextInput style={styles.textInput} placeholder='e-mail' placeholderTextColor='#968EEB' value={email} onChangeText={(text) => setEmail(text)} />
             <TextInput style={styles.textInput} placeholder='senha' placeholderTextColor='#968EEB' value={password} secureTextEntry onChangeText={(text) => setPassword(text)} />
             <TextInput style={styles.textInput} placeholder='confirmar senha' placeholderTextColor='#968EEB' value={confirmPassword} secureTextEntry onChangeText={(text) => setConfirmPassword(text)} />
-            <TouchableOpacity style={{...styles.buttons, backgroundColor: '#5C55B4'}} onPress={() => handleSignUp()}><Text>Cadastrar-se</Text></TouchableOpacity>
+            <TouchableOpacity style={{...styles.buttons, backgroundColor: '#5C55B4'}} onPress={() => handleSignUp()}><Text style={{...styles.textButtons, fontSize: actuatedNormalize(13)}}>Cadastrar-se</Text></TouchableOpacity>
          </View>
       </View>
    )
