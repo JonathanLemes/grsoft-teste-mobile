@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../contexts/apiContexts';
-import { Alert, Image, Platform, StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Alert, Image, Platform, StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 import { vw, vh } from 'react-native-expo-viewport-units';
 import SizeContext from '../../contexts/sizeContexts';
 //import Masonry from 'react-native-masonry';
@@ -77,18 +77,18 @@ const Products: React.FC = (props: React.Component<Props> | any) => {
 
    if (products.length === 0) {
       return (
-         <View style={styles.view}>
+         <KeyboardAvoidingView style={styles.view}>
             <TouchableOpacity style={styles.returnButton} onPress={() => props.navigation.navigate('Categories')}><Text style={{...styles.returnText, fontSize: actuatedNormalize(30)}}>{'<'}</Text></TouchableOpacity>
             <Image style={styles.image} source={require('../../images/logo.png')} />
             <View style={{...styles.viewProductsContainer, justifyContent: 'center'}}>
                <ActivityIndicator size="large" color="#5C55B4" />
             </View>
-         </View>
+         </KeyboardAvoidingView>
       );
    }
 
    return (
-      <View style={styles.view}>
+      <KeyboardAvoidingView style={styles.view} behavior={'height'} keyboardVerticalOffset={-250}>
          <TouchableOpacity style={styles.returnButton} onPress={() => props.navigation.navigate('Categories')}><Text style={{...styles.returnText, fontSize: actuatedNormalize(30)}}>{'<'}</Text></TouchableOpacity>
          <Image style={styles.image} source={require('../../images/logo.png')} />
          <View style={styles.viewProductsContainer}>
@@ -110,7 +110,7 @@ const Products: React.FC = (props: React.Component<Props> | any) => {
                </View>
             </View>
          </View>
-      </View>
+      </KeyboardAvoidingView>
    )
 }
 
